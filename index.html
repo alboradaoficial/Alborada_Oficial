@@ -183,115 +183,8 @@
     </div>
 </section>
 
-<!-- SECCIÓN DE PEDIDO PERSONALIZADO -->
-<section id="pedido" class="seccion-pedido">
-    <h2>Personaliza Tu Pedido</h2>
-    <p class="subtitulo-seccion">Diseña tu regalo ideal, nosotros lo hacemos realidad</p>
-
-    <div class="contenedor-pedido">
-
-        <!-- LADO IZQUIERDO — DATOS Y DETALLES -->
-        <div class="bloque-datos">
-            <h3>Tus Datos y Preferencias</h3>
-
-            <label for="nombre-cliente">Tu Nombre</label>
-            <input type="text" id="nombre-cliente" placeholder="Escribe tu nombre aquí...">
-
-            <label for="descripcion-pedido">¿Qué deseas pedir?</label>
-            <textarea id="descripcion-pedido" rows="4" placeholder="Cuéntanos qué producto, ocasión o detalles especiales..."></textarea>
-
-            <label>Elige tus rellenos (máximo 3)</label>
-            <div class="lista-rellenos">
-                <label><input type="checkbox" class="relleno" value="Arequipe"> Arequipe</label>
-                <label><input type="checkbox" class="relleno" value="Fresa"> Fresa</label>
-                <label><input type="checkbox" class="relleno" value="Coco"> Coco</label>
-                <label><input type="checkbox" class="relleno" value="Nuez"> Nuez</label>
-                <label><input type="checkbox" class="relleno" value="Limón"> Limón</label>
-                <label><input type="checkbox" class="relleno" value="Chocolate"> Chocolate</label>
-            </div>
-
-            <label for="comentarios-extras">Comentarios Adicionales</label>
-            <textarea id="comentarios-extras" rows="3" placeholder="Colores, mensajes, fechas especiales..."></textarea>
-        </div>
-
-        <!-- LADO DERECHO — TAMAÑO DE VINO Y PRECIO -->
-        <div class="bloque-opciones">
-            <h3>Tamaño del Vino</h3>
-
-            <div class="opcion-vino">
-                <label class="etiqueta-opcion">
-                    <input type="radio" name="tamaño-vino" value="grande" data-precio-base="0" checked>
-                    <span class="texto-opcion">Vino Grande — 750 ml</span>
-                </label>
-            </div>
-
-            <div class="opcion-vino">
-                <label class="etiqueta-opcion">
-                    <input type="radio" name="tamaño-vino" value="pequeño" data-precio-base="-4000">
-                    <span class="texto-opcion">Vino Pequeño — 350 ml</span>
-                    <span class="diferencia-precio">− $4.000</span>
-                </label>
-            </div>
-
-            <div class="opcion-vino">
-                <label class="etiqueta-opcion">
-                    <input type="radio" name="tamaño-vino" value="sin" data-precio-base="-15000">
-                    <span class="texto-opcion">Sin vino</span>
-                    <span class="diferencia-precio">− $15.000</span>
-                </label>
-            </div>
-
-            <div class="caja-precio-final">
-                <p class="etiqueta-total">Precio Estimado:</p>
-                <p class="precio-total" id="precio-mostrado">$ 0 COP</p>
-                <p class="nota-precio">* El precio final se confirma según los productos elegidos</p>
-            </div>
-
-            <button class="boton-enviar" id="boton-pedir">Enviar Pedido por WhatsApp</button>
-        </div>
-
-    </div>
-</section>
-
-<!-- CONTACTO -->
-<section id="contacto" class="seccion-contacto">
-    <h2>Contáctanos</h2>
-    <p class="subtitulo-seccion">Estamos aquí para ayudarte a crear momentos inolvidables</p>
-
-    <div class="info-contacto">
-        <p class="dato-contacto">📲 WhatsApp: <a href="https://wa.me/573239086199" target="_blank">323 908 6199</a></p>
-        <p class="dato-contacto">📷 Instagram: <a href="https://instagram.com/alborada-chocolate" target="_blank">@alborada-chocolate</a></p>
-    </div>
-</section>
-
-<!-- PIE DE PÁGINA -->
-<footer class="pie-pagina">
-    <p>Alborada — Chocolate que despierta sentimientos © 2026</p>
-</footer>
-
-<!-- CÓDIGO PARA QUE FUNCIONEN LOS PRECIOS Y EL ENVÍO -->
+<!-- CÓDIGO PARA ENVIAR A WHATSAPP -->
 <script>
-// ACTUALIZAR PRECIO SEGÚN TAMAÑO DE VINO
-const opcionesVino = document.querySelectorAll('input[name="tamaño-vino"]');
-const precioMostrado = document.getElementById('precio-mostrado');
-
-function calcularPrecio() {
-    let diferencia = 0;
-    opcionesVino.forEach(opcion => {
-        if (opcion.checked) {
-            diferencia = parseInt(opcion.dataset.precioBase);
-        }
-    });
-    // El precio base se confirma al momento de elegir el producto
-    precioMostrado.textContent = `Desde $ ${Math.max(0, 100000 + diferencia).toLocaleString('es-CO')} COP`;
-}
-
-opcionesVino.forEach(opcion => {
-    opcion.addEventListener('change', calcularPrecio);
-});
-calcularPrecio();
-
-// ENVÍO A WHATSAPP
 document.getElementById('boton-pedir').addEventListener('click', function() {
     const nombre = document.getElementById('nombre-cliente').value.trim();
     const pedido = document.getElementById('descripcion-pedido').value.trim();
@@ -334,6 +227,48 @@ Alborada — Chocolate que despierta sentimientos`;
     window.open(enlace, '_blank');
 });
 </script>
+    
+<!-- CÓDIGO PARA ENVIAR A WHATSAPP -->
+<script>
+document.getElementById('boton-pedir').addEventListener('click', function() {
+    const nombre = document.getElementById('nombre-cliente').value.trim();
+    const pedido = document.getElementById('descripcion-pedido').value.trim();
+    const comentarios = document.getElementById('comentarios-extras').value.trim();
+    
+    const rellenosSeleccionados = Array.from(document.querySelectorAll('.relleno:checked'))
+        .map(cb => cb.value)
+        .slice(0, 3)
+        .join(', ');
 
-</body>
-</html>
+    const tamañoVino = document.querySelector('input[name="tamaño-vino"]:checked').value;
+    const textoVino = tamañoVino === 'grande' ? 'Vino Grande (750 ml)' :
+                      tamañoVino === 'pequeño' ? 'Vino Pequeño (350 ml)' : 'Sin vino';
+
+    if (!nombre || !pedido) {
+        alert('Por favor escribe tu nombre y qué deseas pedir ✨');
+        return;
+    }
+
+    const mensaje = `¡Hola! Quiero hacer un pedido 🤎
+
+👤 Nombre: ${nombre}
+
+📝 Pedido:
+${pedido}
+
+🍫 Rellenos preferidos:
+${rellenosSeleccionados || 'Ninguno seleccionado'}
+
+🍷 Tamaño de vino:
+${textoVino}
+
+💬 Comentarios adicionales:
+${comentarios || 'Ninguno'}
+
+---
+Alborada — Chocolate que despierta sentimientos`;
+
+    const enlace = `https://wa.me/573239086199?text=${encodeURIComponent(mensaje)}`;
+    window.open(enlace, '_blank');
+});
+</script>
